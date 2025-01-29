@@ -3,20 +3,21 @@
 include('conn.php');
 
 // Check if required fields are present in the request
-if (isset($_POST['mobileNumber']) && isset($_POST['name']) && isset($_POST['email']) && isset($_POST['address']) && isset($_POST['pincode']) && isset($_POST['deviceToken'])) {
+if (isset($_POST['mobileNumber']) && isset($_POST['name']) && isset($_POST['email']) && isset($_POST['address']) && isset($_POST['pincode']) && isset($_POST['deviceToken']) && isset($_POST['countryCode'])) {
     $mobileNumber = $_POST['mobileNumber'];
     $name = $_POST['name'];
     $email = $_POST['email'];
     $address = $_POST['address'];
     $pincode = $_POST['pincode'];
+    $countryCode = $_POST['countryCode'];
     $deviceToken = $_POST['deviceToken'];
 
     // Debug received data
     error_log("Received Data: " . json_encode($_POST));
 
     // Insert the user data into the database
-    $query = "INSERT INTO `users`(`phone_number`, `name`, `email_id`, `address`, `pincode` ,`device_id`) 
-              VALUES ('$mobileNumber', '$name', '$email', '$address', '$pincode' ,'$deviceToken')";
+    $query = "INSERT INTO `users`(`phone_number`, `name`, `email_id`, `address`, `pincode` ,`device_id`, `country`) 
+              VALUES ('$mobileNumber', '$name', '$email', '$address', '$pincode' ,'$deviceToken','$countryCode')";
     $exe = mysqli_query($mysqli, $query);
 
     $arr = [];
@@ -25,7 +26,7 @@ if (isset($_POST['mobileNumber']) && isset($_POST['name']) && isset($_POST['emai
         $inserted_id = mysqli_insert_id($mysqli);
 
         // Fetch the newly inserted data from the table
-        $fetch_query = "SELECT `id`, `phone_number`, `name`, `email_id`, `address`, `pincode` ,`device_id`
+        $fetch_query = "SELECT `id`, `phone_number`, `name`, `email_id`, `address`, `pincode` ,`device_id`,`country`
                         FROM `users` WHERE `id` = $inserted_id";
         $result = mysqli_query($mysqli, $fetch_query);
 

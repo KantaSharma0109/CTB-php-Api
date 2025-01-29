@@ -3,7 +3,24 @@ include('conn.php');
 $base_url = "https://dashboard.cheftarunabirla.com";
 $user_id = $_GET['user_id'] ?? '';
 
+// Add the notification query
+$token = $_GET['token'] ?? ''; // This is the token sent in the request headers
+$notification_query = "
+    SELECT COUNT(*) AS notificationCount 
+    FROM `notifications` 
+    INNER JOIN `users` ON `notifications`.`user_id` = `users`.`id` 
+    WHERE `notifications`.`status` = 1 
+    AND `users`.`device_id` = '$token'";
 
+// Execute the query to get the notification count
+$notification_result = $mysqli->query($notification_query);
+
+// Initialize notification count to 0
+$notification_count = 0;
+
+if ($notification_result && $row = $notification_result->fetch_assoc()) {
+    $notification_count = $row['notificationCount'];
+}
 // Query to fetch slider data
 $query = "SELECT * FROM `slider` WHERE `status` = 1 AND `show_category` = 'all' ORDER BY `date` DESC";
 
@@ -281,6 +298,7 @@ while ($row = $cart_result->fetch_assoc()) {
             //  'product_sub_categories' => $product_sub_categories,
              'impBooks' => $imp_books,
              'cart' => $cart,
+             'notification_count' => $notification_count,
         )
     ), JSON_UNESCAPED_SLASHES);
 }

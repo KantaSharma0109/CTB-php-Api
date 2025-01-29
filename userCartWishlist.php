@@ -10,11 +10,11 @@ function parseInputBody() {
 function addToWishlist($mysqli, $body) {
     $query = "";
     if ($body['category'] == 'product') {
-        $query = "INSERT INTO `cart` (`category`, `product_id`, `user_id`, `cart_category`) VALUES ('product', ?, ?, 'wishlist')";
+        $query = "INSERT INTO `cart` (`category`, `product_id`, `user_id`, `cart_category`) VALUES ('product', ?, ?, 'whislist')";
     } elseif ($body['category'] == 'course') {
-        $query = "INSERT INTO `cart` (`category`, `course_id`, `user_id`, `cart_category`) VALUES ('course', ?, ?, 'wishlist')";
+        $query = "INSERT INTO `cart` (`category`, `course_id`, `user_id`, `cart_category`) VALUES ('course', ?, ?, 'whislist')";
     } elseif ($body['category'] == 'book' || $body['category'] == 'book-videos') {
-        $query = "INSERT INTO `cart` (`category`, `book_id`, `user_id`, `cart_category`) VALUES ('" . $body['category'] . "', ?, ?, 'wishlist')";
+        $query = "INSERT INTO `cart` (`category`, `book_id`, `user_id`, `cart_category`) VALUES ('" . $body['category'] . "', ?, ?, 'whislist')";
     }
 
     if (!empty($query)) {
